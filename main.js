@@ -6,7 +6,7 @@
 - img - это строка;
 - weapon - это массив строк (пока можно написать любое оружие, которое вы сможете придумать, не имеет пока значение какое);
 - attack - это функция, внутри которой нужно поместить console.log, который будет выводить сконкатинированную строку имя вашего персонажа + fight (<имя вашего персонажа> + ‘Fight...’);  */
-const player1 = {
+/*const player1 = {
     name: 'Sonya Blade',
     hp: 90,
     img: 'http://reactmarathon-api.herokuapp.com/assets/sonya.gif',
@@ -24,7 +24,7 @@ const player2 = {
     attack() {
         console.log(`${player2.name} Fight...`);
     }
-}
+}*/
 
 
 /*## Task #1
@@ -59,7 +59,7 @@ const player2 = {
 - http://reactmarathon-api.herokuapp.com/assets/sonya.gif
 - http://reactmarathon-api.herokuapp.com/assets/subzero.gif*/
 
-function createPlayer() {
+/*function createPlayer() {
     const $root = document.querySelector('.root');
 
     const $player1 = document.createElement('div');
@@ -88,7 +88,7 @@ function createPlayer() {
     const $img = document.createElement('img');
     $img.src = 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif';
     $character.appendChild($img);
-}
+}*/
 
 
 /*## Task #2
@@ -117,7 +117,7 @@ createPlayer('player2', 'SUB-ZERO', 80);
 
 Таким образом у вас в *div.arenas* будут располагаться два дива с классом *player1* и *player2**/
 
-function createPlayer(classPlayer, namePlayer, hp) {
+/*function createPlayer(classPlayer, namePlayer, hp) {
     const $arenas = document.querySelector('.arenas');
 
     const $player = document.createElement('div');
@@ -149,7 +149,7 @@ function createPlayer(classPlayer, namePlayer, hp) {
 }
 
 createPlayer('player1', 'SCORPION', 50);
-createPlayer('player2', 'SUB-ZERO', 80);
+createPlayer('player2', 'SUB-ZERO', 80);*/
 
 
 /*## Task #3 (*)
