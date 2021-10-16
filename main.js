@@ -1,14 +1,12 @@
-/* ## Task #0
+/*## Task #0
 
-Создай два объекта с именем разных игроков, где будут поля 
-- name - это строка;
-- hp - это число;
-- img - это строка;
-- weapon - это массив строк (пока можно написать любое оружие, которое вы сможете придумать, не имеет пока значение какое);
-- attack - это функция, внутри которой нужно поместить console.log, который будет выводить сконкатинированную строку имя вашего персонажа + fight (<имя вашего персонажа> + ‘Fight...’);  */
-/*const player1 = {
+Добавь в объекты поле player. У первого игрока это будет значение 1, у второго — 2.
+
+Также свойству hp выставь значение 100.*/
+const player1 = {
     name: 'Sonya Blade',
-    hp: 90,
+    player: 1,
+    hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/sonya.gif',
     weapon: ['Wind Blade', 'Kali\'s clubs', 'Garrotte', 'Pomegranates', 'Drone'],
     attack() {
@@ -18,151 +16,86 @@
 
 const player2 = {
     name: 'Kitana',
-    hp: 10,
+    player: 2,
+    hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
     weapon: ['Steel fans', 'Flying blade', 'Bo', 'Razorang', 'Sai'],
     attack() {
         console.log(`${player2.name} Fight...`);
     }
-}*/
+}
+
+const $arenas = document.querySelector('.arenas');
+const $randomButton = document.querySelector('.button');
+
+$randomButton.addEventListener('click', function() {
+    changeHP(player1);
+    changeHP(player2);
+})
+
+function changeHP(player) {
+    const $playerLife = document.querySelector(`.player${player.player} .life`); 
+    player.hp -= 20;
+    $playerLife.style.width = `${player.hp}%`;
+    
+    if(player.hp <= 0) {
+        $arenas.appendChild(playerLose(player.name));
+    }
+}
+
+function playerLose(name) {
+    const $loseTitle = createElement('div', 'loseTitle');
+    $loseTitle. innerText = name + ' lose';
+
+    return $loseTitle;
+}
+
+function createElement(tag, className) {
+    const el = document.createElement(tag);
+    if(className) {
+        el.classList.add(className)
+    };
+
+    return el;
+}
+
+function createPlayer(player) {
+    const $player = createElement('div', `player${player.player}`);
+    const $progressbar = createElement('div', 'progressbar');
+    const $character = createElement('div', 'character');
+    const $life = createElement('div', 'life');
+    const $name = createElement('div', 'name');
+    const $img = createElement('img');
+
+    $life.style.width = `${player.hp}%`;
+    $name.innerText = player.name;
+    $img.src = player.img;
+
+    $arenas.appendChild($player);
+    $player.appendChild($progressbar);
+    $player.appendChild($character);
+    $progressbar.appendChild($life);
+    $progressbar.appendChild($name);
+    $character.appendChild($img);
+}
+
+createPlayer(player1);
+createPlayer(player2);
 
 
 /*## Task #1
 
-Итак, нужно создать функцию с именем **`createPlayer()`** ,внутри которой ты напишешь создание элемента **div** с классом **player1** (далее ***div.player1***), внутри этого элемента 
-есть еще два элемента ***div.progressbar*** и ***div.character***. Внутри ***div.progressbar*** есть еще два дива —  ***div.life*** и ***div.name***. Внутри ***div.character*** есть 
-только картинка ***img***.
+В первой задачи отточим навык условных конструкций.
 
-- Для ***div.life*** добавь свойство style.width в значение 100%;
-- Для ***div.name*** нужно положить текст, это имя нашего героя.
-- Для картинки можешь взять любую ссылку из приведенных ниже.
+Если обратишь внимание, когда жизни игрока уходят в минус (-), то наш **style.width** перестает работать.
+Задача сделать так, что если жизни становятся меньше или равные 0, то игроку нужно записать 0, а не минусовое значение.
 
-Структура готового HTML будет выглядеть примерно так.
-
-```html
-<div class="player1">
-    <div class="progressbar">
-        <div class="life"></div>
-        <div class="name">SCORPION</div>
-    </div>
-    <div class="character">
-        <img src="http://reactmarathon-api.herokuapp.com/assets/scorpion.gif" />
-    </div>
-</div>
-```
-
-### Ссылки для картинки
-
-- http://reactmarathon-api.herokuapp.com/assets/scorpion.gif
-- http://reactmarathon-api.herokuapp.com/assets/kitana.gif
-- http://reactmarathon-api.herokuapp.com/assets/liukang.gif
-- http://reactmarathon-api.herokuapp.com/assets/sonya.gif
-- http://reactmarathon-api.herokuapp.com/assets/subzero.gif*/
-
-/*function createPlayer() {
-    const $root = document.querySelector('.root');
-
-    const $player1 = document.createElement('div');
-    $player1.classList.add('player1');
-    $root.appendChild($player1);
-
-
-    const $progressbar = document.createElement('div');
-    $progressbar.classList.add('progressbar');
-    $player1.appendChild($progressbar);
-
-    const $character = document.createElement('div');
-    $character.classList.add('character');
-    $player1.appendChild($character);
-
-    const $life = document.createElement('div');
-    $life.classList.add('life');
-    $life.style.width = '100%';
-    $progressbar.appendChild($life);
-
-    const $name = document.createElement('div');
-    $name.classList.add('name');
-    $name.innerText = 'SCORPION<';
-    $progressbar.appendChild($name);
-
-    const $img = document.createElement('img');
-    $img.src = 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif';
-    $character.appendChild($img);
-}*/
-
-
-/*## Task #2
-
-После того как функция будет реализована, потребуется передать в эту функцию три аргумента. Первый аргумент — это класс первого или второго игрока, 
-т.е. player1 или player2.
-
-Второй аргумент — имя Игрока, это может быть любое Имя.
-
-Третий аргумент — жизни, передавать надо от 0 до 100.
-
-И дальше позвать эту функцию два раза в коде, один раз со значение player1, второй раз со значение player2.
-
-Пример вызова функции выглядит так:
-
-```jsx
-createPlayer('player1', 'SCORPION', 50);
-createPlayer('player2', 'SUB-ZERO', 80);
-```
-
-### Важно!
-
-> В каждой функции после создания всех нужных элементов, родительский элемент нужно поместить в **div.arenas**
-Как это делать вы знаете, при помощи `appendChild()`
-> 
-
-Таким образом у вас в *div.arenas* будут располагаться два дива с классом *player1* и *player2**/
-
-/*function createPlayer(classPlayer, namePlayer, hp) {
-    const $arenas = document.querySelector('.arenas');
-
-    const $player = document.createElement('div');
-    $player.classList.add(classPlayer);
-    $arenas.appendChild($player);
-
-
-    const $progressbar = document.createElement('div');
-    $progressbar.classList.add('progressbar');
-    $player.appendChild($progressbar);
-
-    const $character = document.createElement('div');
-    $character.classList.add('character');
-    $player.appendChild($character);
-
-    const $life = document.createElement('div');
-    $life.classList.add('life');
-    $life.style.width = `${hp}%`;
-    $progressbar.appendChild($life);
-
-    const $name = document.createElement('div');
-    $name.classList.add('name');
-    $name.innerText = namePlayer;
-    $progressbar.appendChild($name);
-
-    const $img = document.createElement('img');
-    $img.src = 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif';
-    $character.appendChild($img);
-}
-
-createPlayer('player1', 'SCORPION', 50);
-createPlayer('player2', 'SUB-ZERO', 80);*/
-
-
-/*## Task #3 (*)
-
-Это задание со звездочкой.
-
-Передай в функцию createPlayer всего лишь два аргумента, 1 аргумент это строка 'player1' или 'player2' второй аргумент — это объект твоего игрока из задания Task#0.
-
-Необходимые поля, такие как name, hp, img вставь в нужные места в коде.*/
-
+Чтобы более подробно понять, о чем тут идет речь, попробуй в функции **changeHP,** когда вы изменяешь жизни игрока, 
+поставить `console.log`, чтобы увидеть, какие данные с какими свойствами отображаются.*/
 const player1 = {
     name: 'Sonya Blade',
-    hp: 90,
+    player: 1,
+    hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/sonya.gif',
     weapon: ['Wind Blade', 'Kali\'s clubs', 'Garrotte', 'Pomegranates', 'Drone'],
     attack() {
@@ -172,7 +105,8 @@ const player1 = {
 
 const player2 = {
     name: 'Kitana',
-    hp: 10,
+    player: 2,
+    hp: 100,
     img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
     weapon: ['Steel fans', 'Flying blade', 'Bo', 'Razorang', 'Sai'],
     attack() {
@@ -180,35 +114,274 @@ const player2 = {
     }
 }
 
-function createPlayer(playerNumber, player) {
-    const $arenas = document.querySelector('.arenas');
+const $arenas = document.querySelector('.arenas');
+const $randomButton = document.querySelector('.button');
 
-    const $player = document.createElement('div');
-    $player.classList.add(playerNumber);
-    $arenas.appendChild($player);
+$randomButton.addEventListener('click', function() {
+    changeHP(player1);
+    changeHP(player2);
+})
 
-    const $progressbar = document.createElement('div');
-    $progressbar.classList.add('progressbar');
-    $player.appendChild($progressbar);
+function changeHP(player) {
+    const $playerLife = document.querySelector(`.player${player.player} .life`); 
+    if(player.hp < 20) {
+        player.hp = 0;
+    } else {
+        player.hp -= 20};
+    console.log(player.hp);
+    $playerLife.style.width = `${player.hp}%`;
+    
+    if(player.hp <= 0) {
+        $arenas.appendChild(playerLose(player.name));
+    }
+}
 
-    const $character = document.createElement('div');
-    $character.classList.add('character');
-    $player.appendChild($character);
+function playerLose(name) {
+    const $loseTitle = createElement('div', 'loseTitle');
+    $loseTitle. innerText = name + ' lose';
 
-    const $life = document.createElement('div');
-    $life.classList.add('life');
+    return $loseTitle;
+}
+
+function createElement(tag, className) {
+    const el = document.createElement(tag);
+    if(className) {
+        el.classList.add(className)
+    };
+
+    return el;
+}
+
+function createPlayer(player) {
+    const $player = createElement('div', `player${player.player}`);
+    const $progressbar = createElement('div', 'progressbar');
+    const $character = createElement('div', 'character');
+    const $life = createElement('div', 'life');
+    const $name = createElement('div', 'name');
+    const $img = createElement('img');
+
     $life.style.width = `${player.hp}%`;
-    $progressbar.appendChild($life);
-
-    const $name = document.createElement('div');
-    $name.classList.add('name');
     $name.innerText = player.name;
-    $progressbar.appendChild($name);
-
-    const $img = document.createElement('img');
     $img.src = player.img;
+
+    $arenas.appendChild($player);
+    $player.appendChild($progressbar);
+    $player.appendChild($character);
+    $progressbar.appendChild($life);
+    $progressbar.appendChild($name);
     $character.appendChild($img);
 }
 
-createPlayer('player1', player1);
-createPlayer('player2', player2);
+createPlayer(player1);
+createPlayer(player2);
+
+
+/*## Task #2
+
+Вычитать все время одно и тоже число не очень интересно, ведь тогда игра становится очень предсказуемой.
+Твоя задача написать функцию рандомайзер, которая будет возвращать рандомное число от 1 до 20 и вычитать из жизни игрока это рандомное число. 
+
+Пусть удача подскажет, кто победит.*/
+const player1 = {
+    name: 'Sonya Blade',
+    player: 1,
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/sonya.gif',
+    weapon: ['Wind Blade', 'Kali\'s clubs', 'Garrotte', 'Pomegranates', 'Drone'],
+    attack() {
+        console.log(`${player1.name} Fight...`);
+    }
+}
+
+const player2 = {
+    name: 'Kitana',
+    player: 2,
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
+    weapon: ['Steel fans', 'Flying blade', 'Bo', 'Razorang', 'Sai'],
+    attack() {
+        console.log(`${player2.name} Fight...`);
+    }
+}
+
+const $arenas = document.querySelector('.arenas');
+const $randomButton = document.querySelector('.button');
+
+$randomButton.addEventListener('click', function() {
+    changeHP(player1);
+    changeHP(player2);
+})
+
+function randomNumber() {
+    return Math.ceil(Math.random()*20);
+}
+
+function changeHP(player) {
+    const $playerLife = document.querySelector(`.player${player.player} .life`); 
+    const randomNum = randomNumber();
+    console.log(randomNum);
+    if(player.hp < randomNum) {
+        player.hp = 0;
+    } else {
+        player.hp -= randomNum};
+    console.log(player.hp);
+    $playerLife.style.width = `${player.hp}%`;
+    
+    if(player.hp <= 0) {
+        $arenas.appendChild(playerLose(player.name));
+        $randomButton.remove();
+    }
+}
+
+function playerLose(name) {
+    const $loseTitle = createElement('div', 'loseTitle');
+    $loseTitle. innerText = name + ' lose';
+
+    return $loseTitle;
+}
+
+function createElement(tag, className) {
+    const el = document.createElement(tag);
+    if(className) {
+        el.classList.add(className)
+    };
+
+    return el;
+}
+
+function createPlayer(player) {
+    const $player = createElement('div', `player${player.player}`);
+    const $progressbar = createElement('div', 'progressbar');
+    const $character = createElement('div', 'character');
+    const $life = createElement('div', 'life');
+    const $name = createElement('div', 'name');
+    const $img = createElement('img');
+
+    $life.style.width = `${player.hp}%`;
+    $name.innerText = player.name;
+    $img.src = player.img;
+
+    $arenas.appendChild($player);
+    $player.appendChild($progressbar);
+    $player.appendChild($character);
+    $progressbar.appendChild($life);
+    $progressbar.appendChild($name);
+    $character.appendChild($img);
+}
+
+createPlayer(player1);
+createPlayer(player2);
+
+
+/*## Task #3 (*)
+
+Задача со звездочкой.
+
+Сейчас мы пишем кто проиграл, т.к. это проще всего узнать.
+Попробуй вместо этого вывести, кто победил. (Scorpion wins например)
+Согласись, лучше знать победителя, чем проигравшего!
+Еще после того как кто-то выиграл, кнопку Random нужно отключить.
+Для этого достаточно применить метод **disabled** у кнопки
+`$randomButton.disabled = true`*/
+const player1 = {
+    name: 'Sonya Blade',
+    player: 1,
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/sonya.gif',
+    weapon: ['Wind Blade', 'Kali\'s clubs', 'Garrotte', 'Pomegranates', 'Drone'],
+    attack() {
+        console.log(`${player1.name} Fight...`);
+    }
+}
+
+const player2 = {
+    name: 'Kitana',
+    player: 2,
+    hp: 100,
+    img: 'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
+    weapon: ['Steel fans', 'Flying blade', 'Bo', 'Razorang', 'Sai'],
+    attack() {
+        console.log(`${player2.name} Fight...`);
+    }
+}
+
+const $arenas = document.querySelector('.arenas');
+const $randomButton = document.querySelector('.button');
+
+$randomButton.addEventListener('click', function() {
+    changeHP(player1);
+    changeHP(player2);
+})
+
+function randomNumber() {
+    return Math.ceil(Math.random()*20);
+}
+
+function changeHP(player) {
+    const $playerLife = document.querySelector(`.player${player.player} .life`); 
+    const randomNum = randomNumber();
+    console.log(randomNum);
+    if(player.hp < randomNum) {
+        player.hp = 0;
+    } else {
+        player.hp -= randomNum};
+    console.log(player.hp);
+    $playerLife.style.width = `${player.hp}%`;
+    
+    if(player.hp <= 0) {
+        $arenas.appendChild(playerWin());
+        $randomButton.disabled = true;
+    }
+}
+
+function playerWin() {
+    const $winTitle = createElement('div', 'winTitle');
+    let winPlayer;
+    if (player1.hp === 0) {
+        winPlayer = player2.name;
+    } else {
+        winPlayer = player1.name;
+    };
+    $winTitle.innerText = winPlayer + ' wins';
+
+    return $winTitle;
+}
+
+/*function playerLose(name) {
+    const $loseTitle = createElement('div', 'loseTitle');
+    $loseTitle. innerText = name + ' lose';
+
+    return $loseTitle;
+}*/
+
+function createElement(tag, className) {
+    const el = document.createElement(tag);
+    if(className) {
+        el.classList.add(className)
+    };
+
+    return el;
+}
+
+function createPlayer(player) {
+    const $player = createElement('div', `player${player.player}`);
+    const $progressbar = createElement('div', 'progressbar');
+    const $character = createElement('div', 'character');
+    const $life = createElement('div', 'life');
+    const $name = createElement('div', 'name');
+    const $img = createElement('img');
+
+    $life.style.width = `${player.hp}%`;
+    $name.innerText = player.name;
+    $img.src = player.img;
+
+    $arenas.appendChild($player);
+    $player.appendChild($progressbar);
+    $player.appendChild($character);
+    $progressbar.appendChild($life);
+    $progressbar.appendChild($name);
+    $character.appendChild($img);
+}
+
+createPlayer(player1);
+createPlayer(player2);
